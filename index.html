@@ -30,6 +30,7 @@ body{font-family:"Nunito","Quicksand","Trebuchet MS",system-ui,sans-serif;color:
     linear-gradient(180deg,var(--bg1),var(--bg2))}
 .garland{position:fixed;top:0;left:0;right:0;z-index:1;padding-top:calc(8px + env(safe-area-inset-top,0px));text-align:center;font-size:20px;letter-spacing:5px;white-space:nowrap;overflow:hidden;pointer-events:none;opacity:.9}
 .bubbles span{position:fixed;bottom:-80px;opacity:.4;animation:up linear infinite;pointer-events:none}
+.garland.is-hidden{opacity:0;visibility:hidden;transform:translateY(-12px);transition:opacity .25s ease,transform .25s ease,visibility .25s}
 @keyframes up{to{transform:translateY(-120vh) translateX(30px) rotate(40deg)}}
 #stage{position:relative;height:100%;width:100%;z-index:2}
 .slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:46px 20px 110px;opacity:0;pointer-events:none;transform:translateX(60px) scale(.96);filter:blur(6px);transition:opacity .8s ease,transform .9s cubic-bezier(.22,1,.36,1),filter .8s}
@@ -87,6 +88,90 @@ input:focus{border-color:var(--accent)}
 canvas{position:fixed;inset:0;pointer-events:none;z-index:6}
 @media (prefers-reduced-motion:reduce){.bubbles span,.emoji{animation:none}.slide,.card>*{transition-duration:.01s}}
 </style>
+<style>
+#stage .slide:nth-child(3) .mf{
+  height:clamp(220px,38vh,320px)!important;
+  aspect-ratio:4/5!important;
+}
+</style>
+<style>
+#stage .slide:nth-child(3) .mf{
+  width:min(250px,100%)!important;
+  height:clamp(175px,31vh,270px)!important;
+  aspect-ratio:4/5!important;
+  overflow:hidden!important;
+}
+#stage .slide:nth-child(3) .mf video{
+  object-fit:cover!important;
+  object-position:center!important;
+  transform:scale(1.35);
+}
+</style>
+<style>
+#stage .slide:nth-child(3) .mf{
+  width:min(320px,100%)!important;
+  height:auto!important;
+  aspect-ratio:16/9!important;
+}
+#stage .slide:nth-child(3) .mf video{
+  object-fit:cover!important;
+  object-position:center!important;
+}
+</style>
+<style>
+.mf>img:not(.frame-overlay),.mf>video{
+  position:absolute;
+  top:17%;
+  left:16%;
+  width:68%;
+  height:66%;
+  z-index:1;
+  border-radius:50%!important;
+  object-fit:cover;
+}
+.magic-photo{width:180px;height:220px}
+.magic-photo>.photo{
+  position:absolute;
+  top:17%;
+  left:16%;
+  width:68%;
+  height:66%;
+  z-index:1;
+  border-radius:50%!important;
+  object-fit:cover;
+}
+</style>
+<style>
+#stage .slide:nth-child(4) .mf img{object-position:center top}
+</style>
+<style>
+.mf{
+  position:relative;
+  width:min(250px,100%);
+  height:clamp(210px,34vh,285px);
+  aspect-ratio:4/5;
+  border:10px solid #b77916;
+  border-radius:50%;
+  overflow:visible;
+  background:linear-gradient(135deg,#fff0a3 0%,#d49a27 20%,#7d4b0d 48%,#efc653 72%,#8f5810 100%);
+  box-shadow:0 0 0 3px #fff1a4,0 0 0 8px #8b5710,0 0 0 12px #d9a538,0 14px 32px rgba(71,39,8,.42);
+  transform:none!important;
+}
+.mf::before,.mf::after{
+  position:absolute;
+  left:50%;
+  z-index:3;
+  color:#f6d66b;
+  font-size:34px;
+  line-height:1;
+  text-shadow:0 2px 2px #70420b,0 0 4px #fff0a3;
+  transform:translateX(-50%);
+  pointer-events:none;
+}
+.mf::before{content:'❦';top:-28px}
+.mf::after{content:'❦';bottom:-28px;transform:translateX(-50%) rotate(180deg)}
+.mf img,.mf video{border-radius:50%;border:3px solid #f8dc72;box-shadow:inset 0 0 0 3px #75440b;object-fit:cover}
+</style>
 </head>
 <body>
 <div class="bubbles" id="bubbles"></div>
@@ -136,7 +221,9 @@ const slides = [];
 
 slides.push(`<div class="card"><div class="hero"><span class="pal">🦌</span><img class="snow" alt="Branca de Neve"><span class="pal">🐇</span></div><span class="badge">Era uma vez…</span><h1>${esc(CONFIG.nome)}</h1><p>Vem ver como foram os primeiros 12 meses da nossa princesinha. Toque em continuar ✨</p></div>`);
 
-CONFIG.meses.forEach((m, i) => {
+slides.push(`<div class="card"><div class="mf"><img src="Nascimento.jpeg" alt="Foto do nascimento da \u00cdsis"></div><h2>Nascimento</h2><p>No dia 27/10/2025, \u00e0s 10h44 o amor ganhou forma, cheiro e um rostinho que j\u00e1 am\u00e1vamos antes mesmo de conhecer.<br><br>Com 3.200 kg e 50 cm de pura perfei\u00e7\u00e3o, \u00cdsis chegou atrav\u00e9s de uma cesariana, iluminando nossas vidas com sua presen\u00e7a</p></div>`);
+
+CONFIG.meses.slice(0, 11).forEach((m, i) => {
   const ft = (CONFIG.fotos && CONFIG.fotos[i]) || '';
   const topo = ft
     ? `<div class="mf"><img src="${esc(ft)}" alt="${esc(CONFIG.nome)} com ${i+1} ${i===0?'mês':'meses'}" onerror="this.parentNode.classList.add('off')"><span class="tag">${m[0]}</span></div>`
@@ -221,6 +308,243 @@ function tick(){
 }
 go(0);
 </script>
+<script>
+window.addEventListener('load', () => {
+  const quartoMes = document.querySelector('#stage .slide:nth-child(6) .card');
+  if (!quartoMes) return;
+  const emoji = quartoMes.querySelector('.emoji');
+  const titulo = quartoMes.querySelector('h2');
+  const texto = quartoMes.querySelector('p');
+  if (titulo) titulo.textContent = 'Pezinhos';
+  const videoTerceiro = document.querySelector('#stage .slide:nth-child(5) .mf');
+  if (videoTerceiro) videoTerceiro.style.height = 'clamp(270px,46vh,380px)';
+  const midiaTerceiro = document.querySelector('#stage .slide:nth-child(5) .mf video');
+  if (midiaTerceiro) {
+    midiaTerceiro.style.setProperty('object-position', 'center top', 'important');
+    midiaTerceiro.style.setProperty('object-fit', 'contain', 'important');
+    midiaTerceiro.style.setProperty('transform', 'none', 'important');
+  }
+  if (emoji) {
+    const moldura = document.createElement('div');
+    moldura.className = 'mf';
+    const foto = document.createElement('img');
+    foto.src = '4º Mês.jpeg';
+    foto.alt = 'Foto da Ísis aos 4 meses';
+    moldura.appendChild(foto);
+    emoji.replaceWith(moldura);
+  }
+  if (texto) texto.innerHTML = '4 meses de tantas descobertas! \u2728<br> Nesse m\u00eas, voc\u00ea descobriu o seu pezinho, come\u00e7ou a brincar com ele e ainda rolou pela primeira vez! \ud83e\udd79\ud83d\udc97';
+});
+</script>
+<script>
+window.addEventListener('load', () => {
+  const terceiroMes = document.querySelector('#stage .slide:nth-child(5) .card');
+  if (!terceiroMes) return;
+  const emoji = terceiroMes.querySelector('.emoji');
+  if (!emoji) return;
+  const moldura = document.createElement('div');
+  moldura.className = 'mf';
+  const video = document.createElement('video');
+  video.src = '3º Mês Video.mp4';
+  video.muted = true;
+  video.defaultMuted = true;
+  video.autoplay = true;
+  video.loop = true;
+  video.playsInline = true;
+  moldura.appendChild(video);
+  emoji.replaceWith(moldura);
+});
+</script>
+<style>
+#stage .slide:nth-child(3) .mf video{
+  object-fit:contain!important;
+  object-position:center!important;
+  background:#24151b;
+}
+#stage .slide:nth-child(4) .mf img{
+  object-fit:cover!important;
+  object-position:center 18%!important;
+}
+</style>
+<style>
+.mf{
+  width:min(250px,100%)!important;
+  height:clamp(175px,31vh,270px)!important;
+  aspect-ratio:4/5!important;
+  border:6px solid #d6a72c!important;
+  border-radius:30px!important;
+  background:#fff8e6!important;
+  box-shadow:0 0 0 3px #fff2a8,0 0 0 8px #8b5a16,0 12px 30px rgba(102,60,12,.38)!important;
+  overflow:hidden!important;
+}
+.mf>img:not(.frame-overlay),.mf>video{
+  position:static!important;
+  width:100%!important;
+  height:100%!important;
+  border:0!important;
+  border-radius:16px!important;
+  object-fit:cover!important;
+}
+.magic-photo{width:180px!important;height:180px!important;aspect-ratio:auto!important}
+.magic-photo>.photo{
+  position:static!important;
+  width:100%!important;
+  height:100%!important;
+  border:6px solid #d6a72c!important;
+  border-radius:50%!important;
+  box-shadow:0 0 0 3px #fff2a8,0 0 0 8px #8b5a16,0 14px 30px rgba(102,60,12,.38)!important;
+}
+</style>
+<script>
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.querySelectorAll('.frame-overlay').forEach((moldura) => moldura.remove());
+    document.querySelectorAll('.magic-photo').forEach((quadro) => {
+      const foto = quadro.querySelector('.photo');
+      if (foto) quadro.replaceWith(foto);
+    });
+  }, 100);
+});
+</script>
+<style>
+.mf{width:min(300px,100%);height:auto;aspect-ratio:736/900}
+.magic-photo{width:min(220px,100%);height:auto;aspect-ratio:736/900}
+</style>
+<script>
+window.addEventListener('load', () => {
+  const aplicarMolduras = () => {
+    const criarMoldura = () => {
+      const moldura = document.createElement('img');
+      moldura.className = 'frame-overlay';
+      moldura.src = 'Moldura.png';
+      moldura.alt = '';
+      moldura.setAttribute('aria-hidden', 'true');
+      return moldura;
+    };
+    document.querySelectorAll('.mf').forEach((quadro) => {
+      if (!quadro.querySelector('.frame-overlay')) quadro.appendChild(criarMoldura());
+    });
+    const foto = document.getElementById('foto');
+    if (foto && !foto.closest('.magic-photo')) {
+      const quadro = document.createElement('div');
+      quadro.className = 'magic-photo';
+      foto.parentNode.insertBefore(quadro, foto);
+      quadro.appendChild(foto);
+      quadro.appendChild(criarMoldura());
+    }
+  };
+  setTimeout(aplicarMolduras, 0);
+});
+</script>
+<style>
+.mf{border:0!important;background:transparent!important;box-shadow:none!important}
+.mf::before,.mf::after{display:none}
+.mf>img:not(.frame-overlay),.mf>video{border:0!important;border-radius:50%;box-shadow:none!important}
+.frame-overlay{position:absolute;inset:0;width:100%;height:100%;z-index:4;object-fit:fill!important;border:0!important;border-radius:0!important;box-shadow:none!important;pointer-events:none}
+.magic-photo{position:relative;width:180px;height:180px;margin:0 auto 14px}
+.magic-photo>.photo{width:100%;height:100%;margin:0;border:0!important;box-shadow:none!important}
+</style>
+<script>
+window.addEventListener('load', () => {
+  const moldura = 'Moldura.png';
+  const criarMoldura = () => {
+    const imagem = document.createElement('img');
+    imagem.className = 'frame-overlay';
+    imagem.src = moldura;
+    imagem.alt = '';
+    imagem.setAttribute('aria-hidden', 'true');
+    return imagem;
+  };
+  document.querySelectorAll('.mf').forEach((quadro) => {
+    if (!quadro.querySelector('.frame-overlay')) quadro.appendChild(criarMoldura());
+  });
+  const foto = document.getElementById('foto');
+  if (foto && !foto.closest('.magic-photo')) {
+    const quadro = document.createElement('div');
+    quadro.className = 'magic-photo';
+    foto.parentNode.insertBefore(quadro, foto);
+    quadro.appendChild(foto);
+    quadro.appendChild(criarMoldura());
+  }
+});
+</script>
+<style>
+.mf{
+  height:clamp(175px,31vh,270px);
+  border:6px solid #d6a72c;
+  border-radius:30px;
+  box-shadow:0 0 0 3px #fff2a8,0 0 0 8px #8b5a16,0 12px 30px rgba(102,60,12,.38);
+}
+.photo{
+  width:180px;
+  height:180px;
+  border:6px solid #d6a72c;
+  box-shadow:0 0 0 3px #fff2a8,0 0 0 8px #8b5a16,0 14px 30px rgba(102,60,12,.38);
+}
+</style>
+<script>
+window.addEventListener('load', () => {
+  const segundoMes = document.querySelector('#stage .slide:nth-child(4) .card');
+  if (!segundoMes) return;
+  const emoji = segundoMes.querySelector('.emoji');
+  const titulo = segundoMes.querySelector('h2');
+  const texto = segundoMes.querySelector('p');
+  if (titulo) titulo.textContent = 'M\u00e3ozinhas';
+  if (emoji) {
+    const moldura = document.createElement('div');
+    moldura.className = 'mf';
+    const foto = document.createElement('img');
+    foto.src = '2º Mês.jpeg';
+    foto.alt = 'Foto da Ísis aos 2 meses';
+    moldura.appendChild(foto);
+    emoji.replaceWith(moldura);
+  }
+  if (texto) texto.innerHTML = 'Com 2 meses, seu mundo ainda era quase todo feito de tet\u00ea, colo e muito aconchego. \ud83e\udee3\ud83c\udf7c<br><br>Voc\u00ea descobriu suas m\u00e3ozinhas, come\u00e7ou a observar cada pedacinho de si e os seus sorrisos ficaram cada vez mais evidentes, enchendo nossos dias de amor.';
+});
+</script>
+<script>
+window.addEventListener('load', () => {
+  const primeiraPagina = document.querySelector('#stage .slide:nth-child(2) .card');
+  if (!primeiraPagina) return;
+  const imagem = primeiraPagina.querySelector('.hero img.snow');
+  const titulo = primeiraPagina.querySelector('h2');
+  const texto = primeiraPagina.querySelector('p');
+  if (imagem) imagem.src = 'Nascimento.jpeg';
+  const emoji = primeiraPagina.querySelector('.emoji');
+  if (emoji) {
+    const moldura = document.createElement('div');
+    moldura.className = 'mf';
+    const fotoNascimento = document.createElement('img');
+    fotoNascimento.src = 'Nascimento.jpeg';
+    fotoNascimento.alt = 'Foto do nascimento da Ísis';
+    moldura.appendChild(fotoNascimento);
+    emoji.replaceWith(moldura);
+  }
+  if (titulo) titulo.textContent = 'Nascimento';
+  if (texto) texto.innerHTML = 'No dia 27/10/2025, \u00e0s 10h44 o amor ganhou forma, cheiro e um rostinho que j\u00e1 am\u00e1vamos antes mesmo de conhecer.<br><br>Com 3.200 kg e 50 cm de pura perfei\u00e7\u00e3o, \u00cdsis chegou atrav\u00e9s de uma cesariana, iluminando nossas vidas com sua presen\u00e7a';
+});
+</script>
+<style>
+.card.is-scrolled{background:var(--paper)!important}
+</style>
+<script>
+window.addEventListener('load', () => {
+  const garland = document.querySelector('.garland');
+  document.querySelectorAll('.card').forEach((card) => {
+    const updateScrollState = () => {
+      const scrolled = card.scrollTop > 8;
+      card.classList.toggle('is-scrolled', scrolled);
+      if (garland) garland.classList.toggle('is-hidden', scrolled);
+    };
+    card.addEventListener('scroll', updateScrollState, { passive: true });
+    updateScrollState();
+  });
+});
+</script>
+<style>
+.duo .snow{display:none!important}
+.duo .photo{object-position:center 8%}
+</style>
 <script>
 (() => {
   const guest = document.getElementById('guest');
@@ -322,3 +646,65 @@ window.addEventListener('load', () => {
   };
 });
 </script>
+<script>
+window.addEventListener('load', () => {
+  const garland = document.querySelector('.garland');
+  if (!garland) return;
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('scroll', () => {
+      garland.classList.toggle('is-hidden', card.scrollTop > 8);
+    }, { passive: true });
+  });
+});
+</script>
+<script>
+window.addEventListener('load', () => {
+  const foto = 'foto-isis.jpeg';
+  document.querySelectorAll('.snow').forEach((imagem) => {
+    imagem.src = foto;
+  });
+  const fotoFinal = document.getElementById('foto');
+  if (fotoFinal) fotoFinal.src = foto;
+});
+</script>
+<style>
+.mf video{width:100%;height:100%;object-fit:cover;border-radius:16px;display:block}
+</style>
+<script>
+window.addEventListener('load', () => {
+  const primeiroMes = document.querySelector('#stage .slide:nth-child(3) .card');
+  if (!primeiroMes) return;
+  const emoji = primeiroMes.querySelector('.emoji');
+  if (!emoji) return;
+  const moldura = document.createElement('div');
+  moldura.className = 'mf';
+  const video = document.createElement('video');
+  video.src = 'primeiro-mes.mp4';
+  video.muted = true;
+  video.defaultMuted = true;
+  video.autoplay = true;
+  video.loop = true;
+  video.playsInline = true;
+  moldura.appendChild(video);
+  emoji.replaceWith(moldura);
+});
+</script>
+<style>
+#stage .slide:nth-child(3) .mf{
+  width:min(250px,100%)!important;
+  height:clamp(175px,31vh,270px)!important;
+  aspect-ratio:4/5!important;
+  overflow:hidden!important;
+}
+#stage .slide:nth-child(3) .mf video{
+  position:static!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  transform:scale(1.35)!important;
+}
+</style>
+<style>
+#stage .slide:nth-child(3) .mf{height:clamp(220px,38vh,320px)!important}
+</style>
