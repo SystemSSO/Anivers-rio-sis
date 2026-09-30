@@ -37,8 +37,8 @@ body{font-family:"Nunito","Quicksand","Trebuchet MS",system-ui,sans-serif;color:
 .slide.active{opacity:1;pointer-events:auto;transform:none;filter:none}
 .slide.past{transform:translateX(-60px) scale(.96)}
 .card{width:min(440px,100%);max-height:100%;overflow-y:auto;text-align:center;
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 40'%3E%3Cpath d='M40 21C31 3 7 1 4 13c-2 12 22 15 36 8z' fill='%23c8202f'/%3E%3Cpath d='M40 21C49 3 73 1 76 13c2 12-22 15-36 8z' fill='%23c8202f'/%3E%3Cpath d='M38 20C28 9 15 8 9 13' fill='none' stroke='%239a1622' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M42 20C52 9 65 8 71 13' fill='none' stroke='%239a1622' stroke-width='1.6' stroke-linecap='round'/%3E%3Cellipse cx='40' cy='21' rx='7' ry='8.5' fill='%23a51826'/%3E%3C/svg%3E") no-repeat center 14px/64px 32px,var(--paper);
-  backdrop-filter:blur(10px);border-radius:30px;padding:72px 26px 32px;
+  background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20190%22%3E%3Cg%20stroke%3D%22%23240a0c%22%20stroke-width%3D%224.5%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M104%2077C96%20107%2079%20143%2062%20178L92%20163%20108%20185%20125%2092Z%22%20fill%3D%22%23d8091a%22%2F%3E%3Cpath%20d%3D%22M134%2077C143%20109%20159%20146%20178%20177L148%20162%20132%20185%20116%2091Z%22%20fill%3D%22%23e81020%22%2F%3E%3Cpath%20d%3D%22M104%2062C80%2044%2042%205%2025%2013%207%2020%206%2083%2014%20103%2025%20130%2073%20112%20107%2087Z%22%20fill%3D%22%23e30b1c%22%2F%3E%3Cpath%20d%3D%22M136%2062C160%2044%20198%205%20215%2013%20233%2020%20234%2083%20226%20103%20215%20130%20167%20112%20133%2087Z%22%20fill%3D%22%23e30b1c%22%2F%3E%3Cpath%20d%3D%22M16%2098C36%2081%2071%2081%20101%2082M224%2098C204%2081%20169%2081%20139%2082%22%20fill%3D%22none%22%20stroke%3D%22%23850817%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20d%3D%22M102%2068%2052%2056M102%2079%2046%2076M101%2089%2059%20104M138%2068%20188%2056M138%2079%20194%2076M139%2089%20181%20104M107%20101%2089%20151M133%20101%20151%20151%22%20fill%3D%22none%22%20stroke%3D%22%23850817%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20d%3D%22M103%2048C110%2043%20132%2043%20138%2050%20149%2064%20144%2088%20136%2096%20128%20102%20109%20101%20102%2093%2094%2082%2094%2059%20103%2048Z%22%20fill%3D%22%23c90819%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23fff5e8%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M27%2029C22%2038%2020%2050%2020%2062M211%2030C217%2040%20219%2052%20219%2064M106%2065C107%2054%20116%2053%20123%2056%22%20stroke-width%3D%227%22%2F%3E%3Cpath%20d%3D%22M26%2090%2035%2085M207%2089%20198%2085M137%2077%20135%2084M101%20120%2096%20135M144%20121%20150%20135%22%20stroke-width%3D%224%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") no-repeat center 0px/120px 95px,var(--paper);
+  backdrop-filter:blur(10px);border-radius:30px;padding:98px 26px 32px;
   border:3px double rgba(47,95,168,.42);
   box-shadow:0 0 0 6px rgba(240,185,58,.22),0 22px 50px rgba(47,95,168,.2)}
 .card>*{opacity:0;transform:translateY(16px);transition:.7s cubic-bezier(.22,1,.36,1)}
@@ -288,19 +288,19 @@ const CONFIG = {
   tema: "Primeiro Aninho • Tema Branca de Neve 🍎",
   // Uma foto por mês (na ordem: 1º, 2º ... 12º). Deixe "" para mostrar só o emoji.
   // Use o caminho do arquivo (ex.: "fotos/mes1.jpg", na mesma pasta do HTML) ou uma imagem em base64.
-  fotos: ["","","","","","","","","","","",""],
+  fotos: ["","","","","5º Mês.jpeg","6º Mês.jpeg","7º Mês.jpeg","","","10º Mês.jpeg","",""],
   meses: [                              // edite os textos de cada mês
     ["👶","Chegou ao mundo","O dia mais esperado! Um pedacinho de amor que virou nossa vida do avesso."],
     ["😊","Primeiros sorrisos","Aquele sorriso que derrete qualquer coração começou a aparecer."],
     ["🌷","Cabecinha firme","Ela descobriu o mundo ao redor, curiosa com cada cor e som."],
     ["😂","Gargalhadas","As primeiras risadas gostosas encheram a casa de alegria."],
-    ["🔄","Rolou!","Virou de bruços e mostrou que já tem vontade própria."],
-    ["🥣","Primeira papinha","Meio ano de vida e um novo sabor a cada colherada."],
-    ["🪑","Sentadinha","Sentou sozinha e ganhou uma nova visão do mundo."],
-    ["🐾","Engatinhando","Pronta para explorar cada cantinho da casa."],
-    ["🗣️","Primeiros balbucios","Os sons mais lindos: um 'mama', um 'papa', muita conversa."],
-    ["🧸","De pé com apoio","Se agarrou nos móveis e descobriu que podia se levantar."],
-    ["👣","Passinhos","Os primeiros passinhos, entre tombos e aplausos da família."],
+    ["","Balbucios","Aos 5 meses, os balbucios viraram rotina e nossa casa ficou ainda mais cheia de “conversinhas” gostosas. Você já sentava com apoio, descobrindo cada dia um pouquinho mais do mundo ao seu redor."],
+    ["","Primeira papinha","6 meses chegaram e com ele primeiras comidinhas, primeiros goles de água e muitas descobertas. 🥹✨"],
+    ["","Sentadinha","Já sentava sozinha e descobria cada dia um pouquinho mais do mundo. E, nesse mês, o Brasil ganhou uma nova torcedora para a Copa! 🇧🇷💚💛 Uma fase cheia de descobertas, sorrisos e muito amor! 🥹✨"],
+    ["🐾","Engatinhando","Os 8 meses foram cheios de descobertas, Aprendeu a bater palminhas, dançar , engatinhar e até escalar o sofá kkk🩷"],
+    ["","Primeiros balbucios","9 meses da nossa Ísis! 💕 Aprendeu a pedir “águm”, chamar o “gatim” e a falar “papaiiii”! 🥹❤️"],
+    ["","De pé com apoio","Já dava seus passinhos segurando nas coisas, descobriu a diversão de abrir gavetas e armários das vovós e tirar todas as roupas do lugar! 😂 E as telinhas também ganharam espaço: ela ama a Tia Bela e a Turma do Pititico! 🥹❤️"],
+    ["","Dentinhos","Aprendeu a escovar os dentinhos, passar fio dental kkkkk 🦷😂, engatinha cada vez mais rápido e agora até “corre” no andador! 😂❤️  Último mês antes do tão esperado 1 aninho! 🥹✨"],
     ["🎂","1 aninho!","Um ano de luz, amor e aprendizado. Agora é hora de comemorar!"]
   ]
 };
@@ -310,19 +310,26 @@ const stage = document.getElementById('stage');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const slides = [];
 
-slides.push(`<div class="card"><div class="hero"><span class="pal">🦌</span><img class="snow" alt="Branca de Neve"><span class="pal">🐇</span></div><span class="badge">Era uma vez…</span><h1>${esc(CONFIG.nome)}</h1><p>Vem ver como foram os primeiros 12 meses da nossa princesinha. Toque em Começar ✨</p></div>`);
+slides.push(`<div class="card"><div class="hero"><img class="pal animal-ilustrado" src="animal-cervinho.png" alt="Cervinho"><img class="snow" alt="Foto da Ísis"><img class="pal animal-ilustrado" src="animal-passarinho.png" alt="Passarinho azul"></div><span class="badge">Era uma vez…</span><h1>${esc(CONFIG.nome)}</h1><p>Vem ver como foram os primeiros 12 meses da nossa princesinha. Toque em Começar ✨</p></div>`);
 
 slides.push(`<div class="card"><div class="mf"><img src="Nascimento.jpeg" alt="Foto do nascimento da \u00cdsis"></div><h2>Nascimento</h2><p>No dia 27/10/2025, \u00e0s 10h44 o amor ganhou forma, cheiro e um rostinho que j\u00e1 am\u00e1vamos antes mesmo de conhecer.<br><br>Com 3.200 kg e 50 cm de pura perfei\u00e7\u00e3o, \u00cdsis chegou atrav\u00e9s de uma cesariana, iluminando nossas vidas com sua presen\u00e7a</p></div>`);
 
 CONFIG.meses.slice(0, 11).forEach((m, i) => {
   const ft = (CONFIG.fotos && CONFIG.fotos[i]) || '';
-  const topo = ft
-    ? `<div class="mf"><img src="${esc(ft)}" alt="${esc(CONFIG.nome)} com ${i+1} ${i===0?'mês':'meses'}" onerror="this.parentNode.classList.add('off')"><span class="tag">${m[0]}</span></div>`
+  const topo = i === 10
+    ? `<div class="mf"><video src="11º Mês.mp4" aria-label="Vídeo da Ísis aos 11 meses" autoplay muted loop playsinline></video></div>`
+    : i === 8
+    ? `<div class="mf"><video id="video-nono-mes" src="9º Mês.mp4" aria-label="Vídeo da Ísis aos 9 meses, com áudio" controls playsinline preload="metadata"></video></div>`
+    : i === 7
+    ? `<div class="mf"><video src="8º Mês.mp4" aria-label="Vídeo da Ísis aos 8 meses" autoplay muted loop playsinline></video></div>`
+    : ft
+    ? `<div class="mf"><img src="${esc(ft)}" alt="${esc(CONFIG.nome)} com ${i+1} ${i===0?'mês':'meses'}" onerror="this.parentNode.classList.add('off')">${m[0] ? `<span class="tag">${m[0]}</span>` : ''}</div>`
     : `<span class="emoji">${m[0]}</span>`;
   slides.push(`<div class="card">${topo}<span class="badge">${i+1}º mês</span><h2>${esc(m[1])}</h2><p>${esc(m[2])}</p></div>`);
 });
 
-slides.push(`<div class="card"><div class="duo"><img class="photo" id="foto" alt="Foto da ${esc(CONFIG.nome)}"><img class="snow" alt="Branca de Neve"></div><span class="badge">1 aninho</span><h2>Você está convidado(a)!</h2><p>${esc(CONFIG.nome)} vai comemorar o primeiro ano e quer você por perto. Esperamos por você! 🍎</p><div class="info"><div>🎉 ${esc(CONFIG.tema)}</div><div>📅 ${esc(CONFIG.data)}</div><div>📍 ${esc(CONFIG.local)}</div><div>🎁 Presentes: ${esc(CONFIG.presentes)}</div></div><input id="guest" placeholder="Seu nome" autocomplete="name"><button class="cta" id="rsvp">✅ Confirmar presença</button></div>`);
+slides.push(`<div class="card" id="convite-especial"><div class="mf"><img src="Convite especial.jpeg" alt="Ísis com vestido amarelo entre girassóis" style="object-position:center top!important"></div><p>E se você chegou até aqui, é porque de alguma forma fez parte da minha trajetória. Por isso, temos um convite muito especial para você… 💌</p></div>`);
+slides.push(`<div class="card convite-final"><div class="duo"><img class="animal-convite" src="animal-cervinho.png" alt="Cervinho"><img class="photo" id="foto" alt="Foto da ${esc(CONFIG.nome)}"><img class="animal-convite" src="animal-passarinho.png" alt="Passarinho azul"></div><span class="badge">1 aninho</span><h2>Você está convidado(a)!</h2><p>${esc(CONFIG.nome)} vai comemorar o primeiro ano e quer você por perto. Esperamos por você! 🍎</p><div class="info"><div>🎉 ${esc(CONFIG.tema)}</div><div>📅 ${esc(CONFIG.data)}</div><div>📍 ${esc(CONFIG.local)}</div><div>🎁 Presentes: ${esc(CONFIG.presentes)}</div></div><input id="guest" placeholder="Seu nome" autocomplete="name"><button class="cta" id="rsvp">✅ Confirmar presença</button></div>`);
 
 slides.forEach(html => {
   const s = document.createElement('section');
@@ -340,6 +347,7 @@ function go(n){
   els.forEach((e, i) => {
     e.classList.toggle('active', i === n);
     e.classList.toggle('past', i < n);
+    if (i !== n) e.querySelector('#video-nono-mes')?.pause();
   });
   cur = n;
   prev.disabled = n === 0;
@@ -798,4 +806,118 @@ window.addEventListener('load', () => {
 </style>
 <style>
 #stage .slide:nth-child(3) .mf{height:clamp(220px,38vh,320px)!important}
+</style>
+
+<style id="enquadramento-sexto-mes">
+.mf > img[src="6º Mês.jpeg"]{object-position:center top!important}
+</style>
+
+<script>
+(() => {
+  const video = document.getElementById('video-nono-mes');
+  const musica = document.getElementById('background-music');
+  let mutedAnterior = null;
+  function ajustarMusica() {
+    if (!video.paused && !video.ended && !video.muted && video.volume > 0) {
+      if (mutedAnterior === null) mutedAnterior = musica.muted;
+      musica.muted = true;
+    } else if (mutedAnterior !== null) {
+      musica.muted = mutedAnterior;
+      mutedAnterior = null;
+    }
+  }
+  ['play', 'pause', 'ended', 'volumechange'].forEach(evento => video.addEventListener(evento, ajustarMusica));
+  ['touchstart', 'touchend', 'keydown'].forEach(evento => video.addEventListener(evento, e => e.stopPropagation()));
+})();
+</script>
+
+<style id="animacao-foto-convite">
+@keyframes foto-convite-flutuar{
+  0%,100%{transform:translateY(0) rotate(-1deg) scale(1)}
+  50%{transform:translateY(-6px) rotate(1deg) scale(1.015)}
+}
+.slide.active .card > .duo > .magic-photo{
+  animation:foto-convite-flutuar 4.8s ease-in-out infinite;
+  transform-origin:center;
+}
+@media (prefers-reduced-motion:reduce){
+  .slide.active .card > .duo > .magic-photo{animation:none}
+}
+</style>
+
+<style id="moldura-foto-abertura">
+#stage .slide:first-child .hero{
+  gap:10px;
+  margin-bottom:16px;
+}
+#stage .slide:first-child .hero > .snow{
+  width:min(210px,58%);
+  height:auto;
+  aspect-ratio:1;
+  flex-shrink:0;
+  object-fit:cover;
+  object-position:center 8%;
+  border-radius:50%;
+  border:6px solid #d6a72c;
+  box-shadow:0 0 0 3px #fff2a8,0 0 0 8px #8b5a16,0 12px 26px rgba(102,60,12,.3);
+  filter:none;
+}
+#stage .slide:first-child .hero > .pal{
+  font-size:clamp(30px,8vw,48px);
+}
+</style>
+
+<style id="animais-abertura">
+#stage .slide:first-child .hero{gap:2%}
+#stage .slide:first-child .hero > .snow{width:min(210px,56%)}
+#stage .slide:first-child .hero > .animal-ilustrado{
+  display:block;
+  width:min(90px,20%);
+  height:auto;
+  max-height:120px;
+  min-width:0;
+  object-fit:contain;
+  flex-shrink:0;
+  margin-bottom:4px;
+  filter:drop-shadow(0 4px 5px rgba(0,0,0,.2));
+  transform:scale(1.22);
+  transform-origin:center bottom;
+}
+</style>
+
+<style id="animais-convite">
+#stage .duo{
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap:2%;
+  width:100%;
+  margin-bottom:20px;
+}
+#stage .duo > .magic-photo{
+  width:min(180px,56%)!important;
+  height:auto!important;
+  aspect-ratio:1!important;
+  flex-shrink:0;
+  margin:0;
+}
+#stage .duo > .animal-convite{
+  display:block;
+  width:min(90px,20%);
+  height:auto;
+  max-height:120px;
+  object-fit:contain;
+  flex-shrink:0;
+  margin-bottom:4px;
+  filter:drop-shadow(0 4px 5px rgba(0,0,0,.2));
+  transform:scale(1.22);
+  transform-origin:center bottom;
+}
+</style>
+
+<style id="alinhamento-laco-convite">
+.card.convite-final{
+  background-origin:content-box;
+  background-position:center -98px;
+}
 </style>
