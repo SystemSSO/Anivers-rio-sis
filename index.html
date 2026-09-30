@@ -175,7 +175,7 @@ canvas{position:fixed;inset:0;pointer-events:none;z-index:6}
 </head>
 <body>
 <style>
-.music-toggle{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:12px;z-index:20;display:flex;align-items:center;gap:7px;min-height:44px;padding:9px 15px;border:2px solid var(--accent2);border-radius:99px;background:var(--blue-deep);color:#fff8e6;font:800 14px "Nunito",sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.2);cursor:pointer}
+.music-toggle{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:12px;z-index:20;display:flex;align-items:center;gap:5px;min-height:32px;padding:5px 10px;border:2px solid var(--accent2);border-radius:99px;background:var(--blue-deep);color:#fff8e6;font:800 12px "Nunito",sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.2);cursor:pointer}
 .music-toggle[aria-pressed="true"]{background:var(--accent)}
 .music-toggle:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 .music-toggle:disabled{opacity:.75;cursor:wait}
@@ -216,7 +216,7 @@ canvas{position:fixed;inset:0;pointer-events:none;z-index:6}
     document.removeEventListener('keydown', startOnInteraction);
   }
   async function tryAutoStart() {
-    if (!autoWanted || autoPending) return;
+    if (!autoWanted || autoPending || audio.dataset.videoPriority === 'true') return;
     autoPending = true;
     try {
       await audio.play();
@@ -298,7 +298,7 @@ const CONFIG = {
     ["","Primeira papinha","6 meses chegaram e com ele primeiras comidinhas, primeiros goles de água e muitas descobertas. 🥹✨"],
     ["","Sentadinha","Já sentava sozinha e descobria cada dia um pouquinho mais do mundo. E, nesse mês, o Brasil ganhou uma nova torcedora para a Copa! 🇧🇷💚💛 Uma fase cheia de descobertas, sorrisos e muito amor! 🥹✨"],
     ["🐾","Engatinhando","Os 8 meses foram cheios de descobertas, Aprendeu a bater palminhas, dançar , engatinhar e até escalar o sofá kkk🩷"],
-    ["","Primeiros balbucios","9 meses da nossa Ísis! 💕 Aprendeu a pedir “águm”, chamar o “gatim” e a falar “papaiiii”! 🥹❤️"],
+    ["","Primeiras palavras","9 meses da nossa Ísis! 💕 Aprendeu a pedir “águm”, chamar o “gatim” e a falar “papaiiii”! 🥹❤️"],
     ["","De pé com apoio","Já dava seus passinhos segurando nas coisas, descobriu a diversão de abrir gavetas e armários das vovós e tirar todas as roupas do lugar! 😂 E as telinhas também ganharam espaço: ela ama a Tia Bela e a Turma do Pititico! 🥹❤️"],
     ["","Dentinhos","Aprendeu a escovar os dentinhos, passar fio dental kkkkk 🦷😂, engatinha cada vez mais rápido e agora até “corre” no andador! 😂❤️  Último mês antes do tão esperado 1 aninho! 🥹✨"],
     ["🎂","1 aninho!","Um ano de luz, amor e aprendizado. Agora é hora de comemorar!"]
@@ -319,7 +319,7 @@ CONFIG.meses.slice(0, 11).forEach((m, i) => {
   const topo = i === 10
     ? `<div class="mf"><video src="11º Mês.mp4" aria-label="Vídeo da Ísis aos 11 meses" autoplay muted loop playsinline></video></div>`
     : i === 8
-    ? `<div class="mf"><video id="video-nono-mes" src="9º Mês.mp4" aria-label="Vídeo da Ísis aos 9 meses, com áudio" controls playsinline preload="metadata"></video></div>`
+    ? `<div class="mf"><video id="video-nono-mes" src="9º Mês.mp4" aria-label="Vídeo da Ísis aos 9 meses, com áudio" loop playsinline preload="auto"></video></div>`
     : i === 7
     ? `<div class="mf"><video src="8º Mês.mp4" aria-label="Vídeo da Ísis aos 8 meses" autoplay muted loop playsinline></video></div>`
     : ft
@@ -347,9 +347,10 @@ function go(n){
   els.forEach((e, i) => {
     e.classList.toggle('active', i === n);
     e.classList.toggle('past', i < n);
-    if (i !== n) e.querySelector('#video-nono-mes')?.pause();
+
   });
   cur = n;
+  document.dispatchEvent(new Event('slidechange'));
   prev.disabled = n === 0;
   next.disabled = n === els.length - 1;
   next.textContent = n === 0 ? 'Começar →' : 'Continuar →';
@@ -812,22 +813,42 @@ window.addEventListener('load', () => {
 .mf > img[src="6º Mês.jpeg"]{object-position:center top!important}
 </style>
 
-<script>
+<script id="audio-nono-mes">
 (() => {
   const video = document.getElementById('video-nono-mes');
   const musica = document.getElementById('background-music');
-  let mutedAnterior = null;
-  function ajustarMusica() {
-    if (!video.paused && !video.ended && !video.muted && video.volume > 0) {
-      if (mutedAnterior === null) mutedAnterior = musica.muted;
-      musica.muted = true;
-    } else if (mutedAnterior !== null) {
-      musica.muted = mutedAnterior;
-      mutedAnterior = null;
+  const botao = document.getElementById('music-toggle');
+  let ativo = false;
+  let retomarMusica = false;
+  function iniciarVideo() {
+    if (!ativo || !video.paused) return;
+    video.muted = false;
+    video.volume = 1;
+    video.play().catch(() => {});
+  }
+  function sincronizar() {
+    const visivel = video.closest('.slide').classList.contains('active');
+    if (visivel === ativo) return;
+    ativo = visivel;
+    if (ativo) {
+      retomarMusica = !musica.paused;
+      musica.dataset.videoPriority = 'true';
+      musica.pause();
+      botao.disabled = true;
+      video.currentTime = 0;
+      iniciarVideo();
+    } else {
+      video.pause();
+      delete musica.dataset.videoPriority;
+      botao.disabled = false;
+      if (retomarMusica) musica.play().catch(() => {});
+      retomarMusica = false;
     }
   }
-  ['play', 'pause', 'ended', 'volumechange'].forEach(evento => video.addEventListener(evento, ajustarMusica));
-  ['touchstart', 'touchend', 'keydown'].forEach(evento => video.addEventListener(evento, e => e.stopPropagation()));
+  musica.addEventListener('play', () => { if (ativo) musica.pause(); });
+  document.addEventListener('slidechange', sincronizar);
+  ['click', 'keydown', 'touchend'].forEach(evento => document.addEventListener(evento, iniciarVideo));
+  sincronizar();
 })();
 </script>
 
