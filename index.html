@@ -318,7 +318,7 @@ CONFIG.meses.slice(0, 11).forEach((m, i) => {
 });
 
 slides.push(`<div class="card" id="convite-especial"><div class="mf"><img data-src="Convite especial.jpeg" alt="Ísis com vestido amarelo entre girassóis" style="object-position:center top!important"></div><p>E se você chegou até aqui, é porque de alguma forma fez parte da minha trajetória. Por isso, temos um convite muito especial para você… 💌</p></div>`);
-slides.push(`<div class="card convite-final"><div class="duo"><img class="animal-convite" src="animal-cervinho.png" alt="Cervinho"><img class="photo" id="foto" data-src="foto-isis.jpeg" alt="Foto da ${esc(CONFIG.nome)}"><img class="animal-convite" src="animal-passarinho.png" alt="Passarinho azul"></div><span class="badge">1 aninho</span><h2>Você está convidado(a)!</h2><p>${esc(CONFIG.nome)} vai comemorar o primeiro ano e quer você por perto. Esperamos por você! 🍎</p><div class="info"><div>🎉 ${esc(CONFIG.tema)}</div><div>📅 ${esc(CONFIG.data)}</div><div>📍 ${esc(CONFIG.local)}</div></div><input id="guest" placeholder="Seu nome" autocomplete="name"><button class="cta" id="rsvp">✅ Confirmar presença</button></div>`);
+slides.push(`<div class="card convite-final"><div class="duo"><img class="animal-convite" src="animal-cervinho.png" alt="Cervinho"><img class="photo" id="foto" data-src="foto-isis.jpeg" alt="Foto da ${esc(CONFIG.nome)}"><img class="animal-convite" src="animal-passarinho.png" alt="Passarinho azul"></div><span class="badge">1 aninho</span><h2>Você está convidado(a)!</h2><p>${esc(CONFIG.nome)} vai comemorar o primeiro ano e quer você por perto. Esperamos por você! 🍎</p><div class="info"><div>🎉 ${esc(CONFIG.tema)}</div><div>📅 ${esc(CONFIG.data)}</div><div>📍 ${esc(CONFIG.local)}</div></div><button class="cta" id="rsvp">✅ Confirmar presença</button></div>`);
 
 slides.forEach(html => {
   const s = document.createElement('section');
@@ -457,37 +457,82 @@ document.querySelectorAll('.card').forEach(card => {
   }, {passive:true});
 });
 
-const guest = document.getElementById('guest');
+
 const rsvp = document.getElementById('rsvp');
+
 const label = document.createElement('span');
 label.className = 'family-label';
-label.textContent = 'Quantas pessoas da sua família vão?';
+label.textContent = 'Quantas pessoas da sua família vão? Inclua você se for participar.';
 const options = document.createElement('div');
 options.className = 'family-options';
 options.setAttribute('role', 'group');
 options.setAttribute('aria-label', 'Quantidade de pessoas da família');
+const names = document.createElement('div');
+names.id = 'family-names';
+const nameFields = [];
+function updateNameFields(quantidade) {
+  for (let index = 0; index < quantidade; index++) {
+    if (nameFields[index]) continue;
+    const field = document.createElement('div');
+    const fieldLabel = document.createElement('label');
+    fieldLabel.className = 'family-label';
+    fieldLabel.htmlFor = `family-name-${index + 1}`;
+    fieldLabel.textContent = `Nome da pessoa ${index + 1}`;
+    const input = document.createElement('input');
+    input.id = fieldLabel.htmlFor;
+    input.type = 'text';
+    input.placeholder = `Nome da pessoa ${index + 1}`;
+    input.autocomplete = 'off';
+    input.required = true;
+    input.addEventListener('input', () => input.setCustomValidity(''));
+    field.append(fieldLabel, input);
+    names.appendChild(field);
+    nameFields.push({field, input});
+  }
+  nameFields.forEach(({field, input}, index) => {
+    field.hidden = index >= quantidade;
+    input.disabled = index >= quantidade;
+  });
+}
 for (let number = 1; number <= 10; number++) {
   const button = document.createElement('button');
   button.type = 'button';
   button.textContent = number;
   button.setAttribute('aria-label', `${number} pessoa${number === 1 ? '' : 's'}`);
+  button.setAttribute('aria-pressed', 'false');
   button.onclick = () => {
-    options.querySelectorAll('button').forEach(option => option.classList.remove('selected'));
+    options.querySelectorAll('button').forEach(option => {
+      option.classList.remove('selected');
+      option.setAttribute('aria-pressed', 'false');
+    });
     button.classList.add('selected');
+    button.setAttribute('aria-pressed', 'true');
+    updateNameFields(number);
   };
   options.appendChild(button);
 }
-guest.insertAdjacentElement('afterend', label);
+rsvp.insertAdjacentElement('beforebegin', label);
 label.insertAdjacentElement('afterend', options);
+options.insertAdjacentElement('afterend', names);
 rsvp.onclick = () => {
   const selected = options.querySelector('button.selected');
-  const nome = guest.value.trim();
-  const saudacao = nome ? `Ola! Aqui é ${nome}. ` : 'Ola! ';
-  const confirmacao = `Confirmo minha presença no primeiro aninho da ${CONFIG.nome}.`;
-  const quantidade = selected ? Number(selected.textContent) : 0;
-  const pessoas = `${quantidade} pessoa${quantidade === 1 ? '' : 's'}`;
-  const msg = selected ? `${saudacao}${confirmacao} Vou com ${pessoas} da minha família.` : `${saudacao}${confirmacao}`;
-  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+  if (!selected) {
+    label.textContent = 'Selecione quantas pessoas vão para informar os nomes (inclua você se for participar).';
+    options.querySelector('button').focus();
+    return;
+  }
+  const quantidade = Number(selected.textContent);
+  const activeFields = nameFields.slice(0, quantidade);
+  for (const {input} of activeFields) {
+    input.setCustomValidity(input.value.trim() ? '' : 'Informe o nome desta pessoa.');
+    if (!input.reportValidity()) return;
+  }
+
+  const saudacao = 'Olá! ';
+  const confirmacao = `Confirmo a presença de ${quantidade} pessoa${quantidade === 1 ? '' : 's'} da minha família no primeiro aninho da ${CONFIG.nome}.`;
+  const lista = activeFields.map(({input}, index) => `${index + 1}. ${input.value.trim()}`).join('\n');
+  const msg = `${saudacao}${confirmacao}\n\nNomes de quem vai:\n${lista}`;
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
 };
 go(0);
 </script>
