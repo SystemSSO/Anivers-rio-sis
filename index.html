@@ -208,7 +208,7 @@ canvas{position:fixed;inset:0;pointer-events:none;z-index:6}
     document.removeEventListener('keydown', startOnInteraction);
   }
   async function tryAutoStart() {
-    if (!autoWanted || autoPending || audio.dataset.videoPriority === 'true') return;
+    if (!autoWanted || autoPending) return;
     autoPending = true;
     try {
       await audio.play();
@@ -310,7 +310,7 @@ CONFIG.meses.slice(0, 11).forEach((m, i) => {
   const ft = (CONFIG.fotos && CONFIG.fotos[i]) || '';
   const arquivoVideo = {0:'primeiro-mes.mp4',2:'3º Mês Video.mp4',7:'8º Mês.mp4',8:'9º Mês.mp4',10:'11º Mês.mp4'}[i];
   const topo = arquivoVideo
-    ? `<div class="mf"><video ${i === 8 ? 'id="video-nono-mes"' : 'muted'} data-src="${esc(arquivoVideo)}" aria-label="Vídeo da Ísis aos ${i+1} meses${i === 8 ? ', com áudio' : ''}" loop playsinline preload="none"></video></div>`
+    ? `<div class="mf"><video muted data-src="${esc(arquivoVideo)}" aria-label="Vídeo da Ísis aos ${i+1} meses" loop playsinline preload="none"></video></div>`
     : ft
     ? `<div class="mf"><img data-src="${esc(ft)}" alt="${esc(CONFIG.nome)} com ${i+1} ${i===0?'mês':'meses'}" onerror="this.parentNode.classList.add('off')">${m[0] ? `<span class="tag">${m[0]}</span>` : ''}</div>`
     : `<span class="emoji">${m[0]}</span>`;
@@ -392,14 +392,14 @@ function tick(){
 }
 
 /* Only the current slide plays. The next slide prepares its original media. */
-const musica = document.getElementById('background-music');
-const botaoMusica = document.getElementById('music-toggle');
+
+
 const midias = els.map(slide => ({
   imagens: [...slide.querySelectorAll('img[data-src]')],
   video: slide.querySelector('video')
 }));
-let nonoAtivo = false;
-let retomarMusica = false;
+
+
 
 function prepararMidia(indice, atual = false) {
   const midia = midias[indice];
@@ -416,11 +416,7 @@ function prepararMidia(indice, atual = false) {
 function iniciarVideoAtual() {
   const video = midias[cur].video;
   if (!video || document.hidden || !video.paused) return;
-  if (video.id === 'video-nono-mes') {
-    video.muted = false;
-    video.volume = 1;
-  }
-  // Call play synchronously in the navigation gesture so audio can start on iOS.
+  video.muted = true;
   video.play().catch(() => {});
 }
 
@@ -432,22 +428,6 @@ function sincronizarMidia() {
       video.preload = 'none';
     }
   });
-  const nonoVisivel = videoAtual?.id === 'video-nono-mes';
-  if (nonoVisivel !== nonoAtivo) {
-    nonoAtivo = nonoVisivel;
-    if (nonoAtivo) {
-      retomarMusica = !musica.paused;
-      musica.dataset.videoPriority = 'true';
-      musica.pause();
-      botaoMusica.disabled = true;
-      if (videoAtual.readyState >= 1) videoAtual.currentTime = 0;
-    } else {
-      delete musica.dataset.videoPriority;
-      botaoMusica.disabled = false;
-      if (retomarMusica) musica.play().catch(() => {});
-      retomarMusica = false;
-    }
-  }
   if (document.hidden) return;
   prepararMidia(cur, true);
   iniciarVideoAtual();
@@ -461,7 +441,7 @@ midias.forEach(({video}) => {
     if (document.hidden || video !== midias[cur].video) video.pause();
   });
 });
-musica.addEventListener('play', () => { if (nonoAtivo) musica.pause(); });
+
 document.addEventListener('visibilitychange', sincronizarMidia);
 ['click', 'keydown', 'touchend'].forEach(evento => document.addEventListener(evento, iniciarVideoAtual));
 
